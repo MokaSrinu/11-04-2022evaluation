@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #navbar{
+            display:flex;
+            justify-content:space-around;
+            background-color:white;
+            font-size:34px;
+            font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        }
+        #navbar>div>a{
+            text-decoration:none;
+        }
+        form{
+            display:flex;
+            flex-direction:column;
+            width:30%;
+            margin:auto;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            padding:20px;
+            margin-top:40px;
+        }
+        input,select{
+            padding:10px;
+            margin:5px;
+        }
+        #submit{
+            border-radius:16px;
+            background-color:cadetblue;
+        }
+        table,td,th{
+            border-collapse: collapse;
+            padding:20px;
+            box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+        }
+        th{
+            background-color:teal;
+        }
+        #table1{
+            margin:auto;
+            margin-top:40px;
+        }
+   </style>
+</head>
+<body>
+    <div id="navbar">
+        <div><a href="./index.html" style="color:blueviolet">Home</a></div>
+        <div><a href="./contact.html" style="color:blueviolet">Contact List</a></div>
+        <div><a href="./favourites.html" style="color:blueviolet">Favourites</a></div>
+    </div>
+    <table id="table1">
+        <thead>
+           <tr>
+              <th>Name</th>
+              <th>Mobile Number</th>
+              <th>Type</th>
+              <th>Favourites</th>
+           </tr>
+        </thead>
+        <tbody id="tablebody">
+
+        </tbody>
+    </table>
+</body>
+<script>
+    var favourites;
+    if(localStorage.getItem("favourites")==null){
+        favourites=[];
+    }else{
+        favourites=JSON.parse(localStorage.getItem("favourites"));
+    }
+    var contactList=JSON.parse(localStorage.getItem("contactList"));
+    window.addEventListener("load",function(){
+          displaylist(contactList);
+    });
+    function displaylist(contactList){
+        document.querySelector("tbody").innerHTML="";
+        contactList.forEach(ele => {
+            var row=document.createElement("tr");
+            var td1=document.createElement("td");
+            td1.innerText=ele.cname;
+            var td2=document.createElement("td");
+            td2.innerText=ele.cnumber;
+            var td3=document.createElement("td");
+            td3.innerText=ele.ctype;
+            var td4=document.createElement("td");
+            td4.innerText="Add to Fav";
+            td4.style.color="blue";
+            td4.style.cursor="pointer";
+            //console.log(ele.cname);
+            row.append(td1,td2,td3,td4);
+            document.querySelector("#tablebody").append(row);
+            td4.addEventListener("click",function(){
+                favourites.push(ele);
+                localStorage.setItem("favourites",JSON.stringify(favourites));
+                alert("successfully added to favourite");
+            });
+        });
+    }
+</script>
+</html>
